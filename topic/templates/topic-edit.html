@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Редактирование раздела
+{% endblock %}
+
+{% block content %}
+    <p>Вы хотите отредактировать раздел "{{ topic.title }}" </p>
+    <form action="{% url 'topic:topic-edit' topic.id %}"  method="POST">
+        {% csrf_token %}
+        <p>
+            <label>Ну, если точно хотите, то редактируйте</label><br>
+            <label>
+                <textarea name="title" required="" placeholder="Название обсуждения" cols="50" rows="10">
+                    {{ topic.title }}
+                </textarea>
+            </label><br />
+        </p>
+        <input type="submit" value="Сохранить" >
+    </form>
+
+{% endblock %}

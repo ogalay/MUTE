@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+Главная
+{% endblock %}
+
+{% block description %}
+<div class="presentation container">
+            <h2>Здесь можно <span class="violet">ненавидеть</span> чужой музыкальный вкус</h2>
+            <p>Наслаждайтесь свободой слова, но не угнетайте меньшинства</p><br />
+
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+            <div class="row">
+    <table border="0" cellpadding="4" width="100%">
+        <tr>
+            <td><b>Название раздела</b></td>
+            <td><b>Количество постов</b></td>
+            <td><b>Последний пост</b></td>
+            {% if user.is_superuser %}
+            <td></td>
+            <td></td>
+            {% endif %}
+        </tr>
+        {% for topic in topics %}
+            <tr>
+                <td {% if forloop.last %}class="last"{% endif %}>
+                    <div class="title"> <a href="{% url 'topic:topic-detail' topic.pk %}">{{ topic.title }}</a></div>
+                </td>
+                <td {% if forloop.last %}class="last"{% endif %}>{{ topic.num_posts }}</td>
+                <td {% if forloop.last %}class="last"{% endif %}>
+                    {{ topic.last_post.body }}</td>
+                {% if user.is_superuser %}
+                <td {% if forloop.last %}class="last"{% endif %}>
+                    <a href="{% url 'topic:topic-edit' topic.pk %}"><button type="submit"><span class="violet">Редактировать раздел</span></button></a>
+                </td>
+                 <td {% if forloop.last %}class="last"{% endif %}>
+                     <a href="{% url 'topic:topic-delete' topic.pk %}"><button type="submit"><span class="violet">Удалить раздел</span></button></a>
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+            </div>
+        </div>
+        </div>
+{% endblock %}

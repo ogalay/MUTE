@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Профиль
+{% endblock %}
+
+{% block content %}
+    <p><b>Ваш логин: </b>{{ user.username }}</p>
+    <p><b>Ваше имя: </b>{{ user.first_name }}</p>
+    <p><b>Ваша фамилия: </b>{{ user.last_name }}</p>
+    <p><b>Ваш рейтинг: </b>{{ user.rating }}</p>
+    <p><b>Ваш нелюбимый музыкальный жанр: </b>{%  if user.hated_mus_genre == "PP" %} Поп
+        {% elif user.hated_mus_genre == "RK" %} Рок
+        {% elif user.hated_mus_genre == "RP" %} Рэп
+        {% elif user.hated_mus_genre == "СR" %} Кантри
+        {% elif user.hated_mus_genre == "CL" %} Классическая
+        {% elif user.hated_mus_genre == "HS" %} Хаус
+    {% endif %}</p>
+    <p><b>Ваш email: </b>{{ user.email }}</p>
+
+{% endblock %}
+
+

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Список пользователей
+{% endblock %}
+
+{% block content %}
+
+    <table border="0" cellpadding="4" width="100%">
+        <tr>
+            <td><b>Логин</b></td>
+            <td>Адрес электронной почты</td>
+            <td>ФИ</td>
+            <td>Рейтинг</td>
+            <td>Нелюбимый музыкальный жанр</td>
+            <td>Сделать админом</td>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td {% if forloop.last %}class="last"{% endif %}>
+                    <div class="title"><a href="{% url 'account:profile' user.pk %}">{{ user.username }}</a></div>
+                </td>
+                <td>{{ user.email }}</td>
+                <td {% if forloop.last %}class="last"{% endif %}>{{ user.last_name }} {{ user.first_name }}</td>
+                <td {% if forloop.last %}class="last"{% endif %}>
+                    {{ user.rating }}</td>
+                <td> {%  if user.hated_mus_genre == "PP" %} Поп
+        {% elif user.hated_mus_genre == "RK" %} Рок
+        {% elif user.hated_mus_genre == "RP" %} Рэп
+        {% elif user.hated_mus_genre == "CR" %} Кантри
+        {% elif user.hated_mus_genre == "CL" %} Классическая
+        {% elif user.hated_mus_genre == "HS" %} Хаус
+    {% endif %}</td>
+                {% if not user.is_staff  %}
+                <td><a href="{% url 'account:create_staff' user.pk%}" ><button type="submit" value="Сделать админом">Сделать админом</button></a></td>
+                {% else %}
+                <td><a href="{% url 'account:create_staff' user.pk%}" ><button type="submit" value="Он не админ больше">Он больше не админ</button></a></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+

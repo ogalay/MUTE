@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Редактировать сообщение
+{% endblock %}
+
+
+{% block content %}
+    <p>Вы хотите отредактировать сообщение "{{ post.body }}" от {{ post.creator.username }}</p>
+    <form action="{% url 'topic:post-edit' post.id %}"  method="POST">
+        {% csrf_token %}
+        <p>
+            <label>Ну, если точно хотите, то редактируйте</label><br>
+            <label>
+                <textarea name="body" required="" placeholder="Текст комментария" cols="80" rows="10">
+                    {{ post.body }}
+                </textarea>
+            </label><br />
+        </p>
+        <input type="submit" value="Сохранить" >
+    </form>
+
+{% endblock %}

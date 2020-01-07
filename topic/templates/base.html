@@ -1,0 +1,154 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="ru">
+
+    <head>
+
+        <meta charset="utf-8">
+        <title>{% block title %}
+        {% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400">
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans">
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster">
+        <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
+        <link rel="stylesheet" href="{% static "prettyPhoto/css/prettyPhoto.css" %}">
+        <link rel="stylesheet" href="{% static "css/flexslider.css" %}">
+        <link rel="stylesheet" href="{% static "css/font-awesome.css" %}">
+        <link rel="stylesheet" href="{% static "css/style.css" %}">
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="{% static "ico/MUTE.ico" %}">
+        <link rel="MUTE" sizes="144x144" href="{% static "ico/MUTE.png" %}">
+        <link rel="MUTE" sizes="114x114" href="{% static "ico/MUTE.png" %}">
+        <link rel="MUTE" sizes="72x72" href="{% static "ico/MUTE.png" %}">
+        <link rel="MUTE" href="{% static "ico/MUTE.png" %}">
+
+    </head>
+
+    <body>
+
+        <!-- Header -->
+        <div class="container">
+            <div class="header row">
+                <div class="span12">
+                    <div class="navbar">
+                        <div class="navbar-inner">
+                            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </a>
+                            <h1>
+                            <a class="brand" href="{% url 'topic:topic-index' %}"><img src="{% static "img/portfolio/logo.png" %}" alt=""></a>
+                            </h1>
+                            <div class="nav-collapse collapse">
+                                <ul class="nav pull-right">
+                                    <li class="current-page">
+                                        <a href="{% url 'topic:topic-index' %}"><i class="icon-home"></i><br />Главная</a>
+                                    </li>
+                                    {% if user.is_authenticated %}
+                                    {% if user.is_superuser %}
+                                    <li>
+                                        <a href="{% url 'topic:new_topic' %}"><i class="icon-magic"></i><br />Создать раздел</a>
+                                    </li>
+                                    {% endif %}
+                                    {% if user.is_staff %}
+                                    <li>
+                                        <a href="{% url 'account:user_list' %}"><i class="icon-comments"></i><br />Список пользователей</a>
+                                    </li>
+                                    {% endif %}
+
+
+                                    <li>
+                                        <a href="{% url 'account:profile' user.pk %}"><i class="icon-user"></i>
+                                            <br />{{ user.username }}, Ваш профиль</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'account:logout' %}"><i class="icon-tasks"></i>
+                                            <br />Выйти
+                                        </a>
+                                    </li>
+                                    {% else %}
+                                    <li>
+                                        <a href="{% url 'account:login' %}"><i class="icon-tasks"></i><br />Войти</a>
+                                    </li>
+                                        <li>
+                                        <a href="{% url 'account:signup' %}"><i class="icon-tasks"></i><br />Зарегистрироваться</a>
+                                    </li>
+                                    {% endif %}
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slider -->
+
+        <!-- Site Description -->
+        {% block description %}
+
+        {% endblock %}
+        <!-- Services -->
+        {% block content %}
+        {% endblock %}
+        <!-- Latest Work -->
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="widget span3">
+                        <h4>О нас</h4>
+                        <p>Ничьи права не защищены: позаботьтесь о себе сами.</p>
+                    </div>
+
+                    <div class="widget span3">
+                        <h4>Наши контакты</h4>
+                        <p><i class="icon-map-marker"></i> Мы часто перемещаемся, поэтому местоположения нет</p>
+                        <p><i class="icon-phone"></i> MUTE-FORUM</p>
+                        <p><i class="icon-user"></i> Skype: MUTE</p>
+                        <p><i class="icon-envelope-alt"></i> Email: <a href="">mute@forum.com</a></p>
+                    </div>
+                </div>
+                <div class="footer-border"></div>
+                <div class="row">
+                    <div class="copyright span4">
+                        <p>Copyright 2020 MUTE - Все права защищены. Template by <a href="http://azmind.com">Azmind</a>.</p>
+                    </div>
+                    <div class="social span8">
+                        <a class="dribbble" href="https://vk.com/id163542485"></a>
+                        <a class="twitter" href="https://twitter.com/Just__Fool?s=09"></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Javascript -->
+        <script src="static/js/jquery-1.8.2.min.js"></script>
+        <script src="static/bootstrap/js/bootstrap.min.js"></script>
+        <script src="static/js/jquery.flexslider.js"></script>
+        <script src="static/js/jquery.tweet.js"></script>
+        <script src="static/js/jflickrfeed.js"></script>
+        <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+        <script src="static/js/jquery.ui.map.min.js"></script>
+        <script src="static/js/jquery.quicksand.js"></script>
+        <script src="static/prettyPhoto/js/jquery.prettyPhoto.js"></script>
+        <script src="static/js/scripts.js"></script>
+
+    </body>
+
+</html>
+

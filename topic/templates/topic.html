@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+<!-- Threads  -->
+
+{% block title %}
+    {{ topic.title }}
+{% endblock %}
+
+
+{% block content %}
+{% if user.is_authenticated %}
+<a id="new_forum" class="button" href="{% url 'topic:new-forum' pk %}">Start New Forum</a>
+{% endif %}
+<br />
+<br />
+
+<div id="list">
+<table border="0" cellpadding="4" width="100%">
+    <tr>
+        <td>Обсуждение</td>
+        <td>Количество ответов</td>
+        <td>Последний ответ</td>
+        <td></td>
+    </tr>
+
+    {% for forum in forums.object_list %}
+    <tr>
+        <td {% if forloop.last %}class="last"{% endif %}>
+        <div class="title"> <a href="{% url 'topic:forum-detail' forum.pk %}">{{ forum.title }}</a>
+            </div></td>
+        <td {% if forloop.last %}class="last"{% endif %}>{{ forum.num_replies }}</td>
+        <td {% if forloop.last %}class="last"{% endif %}>
+            {{ forum.last_post.body|linebreaksbr }}</td>
+        {% if user.is_staff %}
+        <td {% if forloop.last %}class="last"{% endif %}>
+             <a href="{% url 'topic:forum-delete' forum.pk %}"><button type="submit">Удалить обсуждение</button></a>
+        </td>
+            <td {% if forloop.last %}class="last"{% endif %}>
+             <a href="{% url 'topic:forum-edit' forum.pk %}"><button type="submit">Редактировать обсуждение</button></a>
+        </td>
+        {% endif %}
+    </tr>
+
+    {% endfor %}
+</table>
+</div>
+
+<!-- Next/Prev page links  -->
+{% if forums.object_list and forums.paginator.num_pages > 1 %}
+<div class="pagination">
+    <span class="step-links">
+        {% if forums.has_previous %}
+            <a href= "?page={{ forums.previous_page_number }}">previous &lt;&lt; </a>
+        {% endif %}
+
+        <span class="current">
+            &nbsp;Page {{ forums.number }} of {{ forums.paginator.num_pages }}
+        </span>
+
+        {% if forums.has_next %}
+            <a href="?page={{ forums.next_page_number }}"> &gt;&gt; next</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+
+{% endblock %}
+

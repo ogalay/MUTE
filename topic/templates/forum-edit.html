@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}
+    Редактирование профиля
+{% endblock %}
+
+{% block content %}
+    <p>Вы хотите отредактировать обсуждение "{{ forum.title }}" от {{ forum.creator.username }}</p>
+    <form action="{% url 'topic:forum-edit' forum.id %}"  method="POST">
+        {% csrf_token %}
+
+            <label>Ну, если точно хотите, то редактируйте</label><br>
+            <p> Измените название</p>
+            <label>
+                <textarea name="title" required="" placeholder="Название обсуждения" cols="30" rows="5">
+                    {{ forum.title }}
+                </textarea>
+            </label><br />
+            <p>И/или описание</p>
+            <label>
+                <textarea name="description" required="" placeholder="Описание обсуждения" cols="30" rows="5">
+                    {{ forum.description }}
+                </textarea>
+            </label><br />
+
+        <input type="submit" value="Сохранить" >
+    </form>
+
+{% endblock %}
+

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+</head>
+<body>
+
+<!-- Forums  -->
+<div id="list">
+    {% if user.is_authenticated %}
+       <p><a href="{% url 'account:profile' user.pk %}"> {{ user.username }},</a><br />
+        <a href="{% url 'account:logout' %}">Выйти</a></p>
+    {% else %}
+    <a href="{% url 'account:login' %}">Войти</a>
+    <a href="{% url 'account:signup' %}">Зарегистрироваться</a>
+    {% endif %}
+    {% if user.is_staff %}
+        <a href="{% url 'account:user_list' %}">Список пользователей</a>
+    {% endif %}
+    {% if user.is_superuser  %}
+        <a href="{% url 'topic:new_topic' %}"> Создать раздел</a>
+    {% endif %}
+    <table border="0" cellpadding="4" width="100%">
+        <tr>
+            <td>Название раздела</td>
+            <td>Количество постов</td>
+            <td>Последний пост</td>
+            {% if user.is_superuser %}
+            <td></td>
+            <td></td>
+            {% endif %}
+        </tr>
+        {% for topic in topics %}
+            <tr>
+                <td {% if forloop.last %}class="last"{% endif %}>
+                    <div class="title"> <a href="{% url 'topic:topic-detail' topic.pk %}">{{ topic.title }}</a></div>
+                </td>
+                <td {% if forloop.last %}class="last"{% endif %}>{{ topic.num_posts }}</td>
+                <td {% if forloop.last %}class="last"{% endif %}>
+                    {{ topic.last_post.body }}</td>
+                {% if user.is_superuser %}
+                <td {% if forloop.last %}class="last"{% endif %}>
+                    <a href="{% url 'topic:topic-edit' topic.pk %}"><button type="submit">Редактировать раздел</button></a>
+                </td>
+                 <td {% if forloop.last %}class="last"{% endif %}>
+                    <a href="{% url 'topic:topic-delete' topic.pk %}"><button type="submit">Удалить раздел</button></a>
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+    <p></p>
+
+
+</div>
+</body>
+</html>

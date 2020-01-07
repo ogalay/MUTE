@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+{{ forum.title }}
+{% endblock %}
+
+{% block content %}
+<a href="{% url 'topic:topic-detail' forum.topic.pk %}">{{ forum.topic.title }}</a>
+<p></p>
+<div class="forum">{{ forum.title }}</div>
+<div id="list">
+    <br />
+    {{ forum.description }}<br/>
+    От {{ forum.creator }} | <span class="date">{{ forum.created }}</span><br/>
+    {% for post in posts.object_list %}
+        <div class="post">
+            <br />
+            {{ post.body }} <br />
+            <b>{{ post.rating }}</b> <br />
+            От {{ post.creator }} | {{ post.creator.rating }} | <span class="date">{{ post.created }}</span>
+            {% if user.is_authenticated %}
+                {% if user.pk != post.creator.pk %}
+                <a href="{% url 'topic:like' post.pk%}"><button type="submit">Оценить</button></a>
+                {% endif %}
+            {% endif %}
+            {% if user.is_staff %}
+                <a href="{% url 'topic:post-delete' post.pk %}"><button type="submit">Удалить комментарий</button></a>
+                <a href="{% url 'topic:post-edit' post.pk %}"><button type="submit">Отредактировать комментарий</button></a>
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+{% if user.is_authenticated %}
+    <form action="{% url 'topic:reply' pk %}" method="post">
+    {% csrf_token %}
+        <label>
+<textarea name="body" required="" placeholder="Текст комментария" cols="80" rows="10">
+</textarea><br />
+        </label>
+    <button type="submit">Отправить</button>
+    </form>
+{% endif %}
+
+
+<!-- Next/Prev page links  -->
+{% if posts.object_list and posts.paginator.num_pages > 1 %}
+<div class="pagination">
+    <span class="step-links">
+        {% if posts.has_previous %}
+            <a href= "?page={{ posts.previous_page_number }}">previous &lt;&lt; </a>
+        {% endif %}
+
+        <span class="current">
+            &nbsp;Page {{ posts.number }} of {{ forums.paginator.num_pages }}
+        </span>
+
+        {% if posts.has_next %}
+            <a href="?page={{ posts.next_page_number }}"> &gt;&gt; next</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+
+{% endblock %}
